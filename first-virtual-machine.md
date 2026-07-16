@@ -1,0 +1,43 @@
+---
+description: Here's are the specs for my first Virtual Machine running on Debian
+---
+
+# First Virtual Machine
+
+### Specifications
+
+#### OS
+
+Debian-13.6.0-amd64
+
+Linux\
+7.x - 2.6 Kernel
+
+#### Disks
+
+40GiB
+
+#### CPU
+
+1 Socket
+
+2 Cores
+
+Type: Default (x86-64-v2-AES)
+
+#### Memory
+
+4096MiB
+
+
+
+
+
+### Debian Setup
+
+Following the conventional Debian setup, I followed through the console and setup what was asked.\
+This was nothing more than setting up hostnames, root password, user and so on.
+
+I chose to install the standard system utilities and SSH server, leaving out the debian desktop environment and GNOME.
+
+I also enabled QEMU guest agent in the options for the VM.&#x20;
