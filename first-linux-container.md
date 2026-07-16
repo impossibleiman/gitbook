@@ -164,5 +164,9 @@ After restarting and installing mcron on my main pc, I can access the server ter
 
 I will add 'Crafty Controller' on a separate docker lxc to control and monitor the server. This will remove the need to have a systemctl service for minecraft&#x20;
 
+I also want to add automatic restarts and backups!
+
+After that I will move to AMP - a well known game server management tool.
+
 
 
