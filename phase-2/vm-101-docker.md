@@ -266,6 +266,6 @@ We know it works when we get something like \
 
 From here we can now go ahead and install Pi-Hole
 
-{% content-ref url="lxc-102.md" %}
-[lxc-102.md](lxc-102.md)
+{% content-ref url="lxc-102-pi-hole.md" %}
+[lxc-102-pi-hole.md](lxc-102-pi-hole.md)
 {% endcontent-ref %}

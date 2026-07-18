@@ -15,7 +15,7 @@
 * [Hardware & Structure](phase-2/hardware-and-structure.md)
 * [Proxmox Virtual Environment](phase-2/proxmox-virtual-environment.md)
 * [VM 101 - Docker](phase-2/vm-101-docker.md)
-* [LXC 102](phase-2/lxc-102.md)
+* [LXC 102 - Pi-Hole](phase-2/lxc-102-pi-hole.md)
 
 ***
 
