@@ -12,6 +12,7 @@
 ## Phase 2
 
 * [Hardware & Structure](phase-2/hardware-and-structure.md)
+* [Proxmox Virtual Environment](phase-2/proxmox-virtual-environment.md)
 
 ***
 

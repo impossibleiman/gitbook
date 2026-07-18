@@ -26,5 +26,3 @@ layout:
 
 Tailscale permission control page
 
-`I am then to later make an automatic updating system for the server to run fortnightly.`
-

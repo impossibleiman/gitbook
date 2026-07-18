@@ -38,7 +38,7 @@ The next upgrade to look at will be adding more NVMe SSDs for game servers and H
 
 Using Draw.io, I created a new scheme for how I want my server to run. The diagram shows all the virtual machines and containers I'd like within this phase.
 
-<figure><picture><source srcset="../.gitbook/assets/18-07-2026-Dark_Mode.png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/18-07-2026-Light_Mode.png" alt="New Proposed Structure Plan"></picture><figcaption><p>Click to enlarge</p></figcaption></figure>
+<figure><picture><source srcset="../.gitbook/assets/18-07-2026-Dark_Mode (1).png" media="(prefers-color-scheme: dark)"><img src="../.gitbook/assets/18-07-2026-Light_Mode (1).png" alt="New Proposed Structure Plan"></picture><figcaption><p>Click to enlarge</p></figcaption></figure>
 
 Whilst this is a plan may look structured and finalised, this is of course subject to change in the future. Remember, at this point I am still new to proxmox and I will definitely find better ways in the future to structure my containers and machines.
 
