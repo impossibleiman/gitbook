@@ -4,9 +4,9 @@ description: This page outlines the hardware and its choices over time
 
 # Hardware
 
-### 16th July 2026
+#### 16th July 2026
 
-#### CPU
+## CPU
 
 Intel Core i5-13500
 
@@ -16,31 +16,31 @@ This CPU provides:
 * 20 Threads
 * Integrated Graphics (Intel UHD 770)
 
-#### Motherboard
+## Motherboard
 
 MSI PRO B760-P WIFI DDR4 (ATX)
 
 This should not need to be upgraded until I need a new CPU or DDR5 RAM
 
-#### RAM
+## RAM
 
 16GB DDR4 2666MHz
 
 This is the first thing to be upgraded, with costs around £105 / 32GB 3200MHz
 
-#### Storage
+## Storage
 
 1TB Samsung 980 Pro NVMe M.2
 
 This is the second thing to be upgraded, with costs around £210 / 2TB
 
-#### Power Supply
+## Power Supply
 
 ASUS TUF Gaming 650W Gold EVO
 
 This is overkill for the server and is unlikely to be upgraded
 
-#### GPU
+## GPU
 
 None&#x20;
 

@@ -4,20 +4,22 @@ description: Here's are the specs for my first Virtual Machine running on Debian
 
 # First Virtual Machine
 
-### Specifications
+#### 16th July 2026
 
-#### OS
+## Specifications
+
+### OS
 
 Debian-13.6.0-amd64
 
 Linux\
 7.x - 2.6 Kernel
 
-#### Disks
+### Disks
 
 40GiB
 
-#### CPU
+### CPU
 
 1 Socket
 
@@ -25,7 +27,7 @@ Linux\
 
 Type: Default (x86-64-v2-AES)
 
-#### Memory
+### Memory
 
 4096MiB
 
@@ -33,7 +35,7 @@ Type: Default (x86-64-v2-AES)
 
 
 
-### Debian Setup
+## Debian Setup
 
 Following the conventional Debian setup, I followed through the console and setup what was asked.\
 This was nothing more than setting up hostnames, root password, user and so on.

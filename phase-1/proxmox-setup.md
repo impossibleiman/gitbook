@@ -6,9 +6,9 @@ description: >-
 
 # Proxmox Setup
 
-### 16th July 2026
+#### 16th July 2026
 
-#### Pre-Install
+## Pre-Install
 
 On my main PC, I flashed proxmox-ve\_9.2-1.iso onto my Kingston 128gb USB with Balena Etcher
 
@@ -22,7 +22,7 @@ I then used the USB to boot up the Server pc into the Proxmox installation:
 
 Then proxmox directed me to 192.168.0.20:8006 which I connected to from my Main PC.
 
-#### Post-Install
+## Post-Install
 
 One of the possible options of a post-setup would be to do the following:
 

@@ -6,27 +6,29 @@ description: >-
 
 # First Linux Container
 
+#### 16th July 2026
+
 ## Setup
 
-#### Template
+### Template
 
 Debian-13-standard\_13.6-1\_amd64
 
-#### Disks
+### Disks
 
 100GiB
 
-#### CPU
+### CPU
 
 6 cores
 
-#### Memory
+### Memory
 
 ~~8192 GiB~~ 10240 GiB
 
 Swap 2048GiB
 
-#### Network
+### Network
 
 ipv4 & ipv6 set to static on 192.168.0.41
 
@@ -57,8 +59,8 @@ To solve this issue, I had to visit my pve console and run `nano /etc/lxc/101.co
 
 In here I added two lines:
 
-* <kbd>features: nesting=1,</kbd><kbd><mark style="color:$success;">keyctl=1<mark style="color:$success;"></kbd>
-* <kbd><mark style="color:$success;">lxc.mount.entry: /dev/net/tun dev/net/tun none bind, create=file<mark style="color:$success;"></kbd>
+* <kbd><mark style="color:$info;">features: nesting=1,<mark style="color:$info;"></kbd><kbd>keyctl=1</kbd>
+* <kbd>lxc.mount.entry: /dev/net/tun dev/net/tun none bind, create=file</kbd>
 
 Rebooted the lxc and running <kbd>tailscale up</kbd> met me with a url to login with my Google account
 
@@ -139,9 +141,11 @@ Then enable the new services on start-up
 `systemctl enable tailscaled`\
 `systemctl enable minecraft`&#x20;
 
-I then tried to run the server manually with `systemctl start minecraft` which looked fine until I ran `systemctl status minecraft` which showed me it exited with status 1 (meaning the OS killed it).
+### My Second Problem
 
-Then trying to run manually with `./start.sh` made it clear we were running into a memory issue. I had set the LXC to run with 8GB of RAM alongside the minecraft server running at 8GB leaving no overhead for both the LXC or Java. I added an extra 2GB to the LXC and reduced the Xms and XmG to 5 and 7 respectively. So the final user\_jvm\_args.txt becomes:
+I then tried to run the server manually with `systemctl start minecraft` which looked fine until I ran `systemctl status minecraft` which showed me <mark style="color:red;">it exited with status 1</mark> (meaning the OS killed it).
+
+Then trying to run manually with `./start.sh` made it clear we were running into a memory issue. I had set the LXC to run with 8GB of RAM (See [Memory](first-linux-container.md#memory)) alongside the minecraft server running at 8GB leaving no overhead for both the LXC or Java. I added an extra 2GB to the LXC and reduced the Xms and XmG to 5 and 7 respectively. So the final user\_jvm\_args.txt becomes:
 
 `-Xms5G`\
 `-Xmx7G`\
@@ -150,7 +154,9 @@ Then trying to run manually with `./start.sh` made it clear we were running into
 `-XX:+DisableExplicitGC`\
 `-XX:+PerfDisableSharedMem`
 
-Upon `systemctl restart minecraft` then `systemctl status minecraft`, debian tells us that the service is running but I now have another issue which is that I cannot see the console. Minecraft already has a solution for this called RCON which we can append in `server.properties`
+Upon `systemctl restart minecraft` then `systemctl status minecraft`, debian tells us that <mark style="color:$success;">the service is running</mark> but I now have a small issue. I cannot see the minecraft console.&#x20;
+
+Minecraft already has a solution for this called RCON which we can append in `server.properties`
 
 `enable-rcon=true`\
 `rcon.port=25575`\
