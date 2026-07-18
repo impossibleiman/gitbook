@@ -1,5 +1,23 @@
 ---
-description: This page outlines the hardware and its choices over time
+description: This page outlines my initial hardware and my future considerations
+layout:
+  width: wide
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
+  actions:
+    visible: true
 ---
 
 # Hardware

@@ -1,5 +1,23 @@
 ---
 description: Here's are the specs for my first Virtual Machine running on Debian
+layout:
+  width: wide
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
+  actions:
+    visible: true
 ---
 
 # First Virtual Machine
@@ -7,6 +25,10 @@ description: Here's are the specs for my first Virtual Machine running on Debian
 #### 16th July 2026
 
 ## Specifications
+
+<details>
+
+<summary>Debian | 2 Cores | 4GB RAM | 40GB NVMe SSD</summary>
 
 ### OS
 
@@ -31,9 +53,7 @@ Type: Default (x86-64-v2-AES)
 
 4096MiB
 
-
-
-
+</details>
 
 ## Debian Setup
 
@@ -43,3 +63,4 @@ This was nothing more than setting up hostnames, root password, user and so on.
 I chose to install the standard system utilities and SSH server, leaving out the debian desktop environment and GNOME.
 
 I also enabled QEMU guest agent in the options for the VM.&#x20;
+
