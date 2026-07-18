@@ -26,3 +26,4 @@ layout:
 
 Tailscale permission control page
 
+Look at upgrading to HTTPS

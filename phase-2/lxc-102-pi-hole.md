@@ -131,4 +131,28 @@ Finally done!
 
 If you're reading this in this current state then just know I was really really tired and I've been up all night working on this so I will definitely refactor this page when I've gotten good sleep!
 
+
+
+
+
+Later on I ensured through the pve host to run Pi-Hole on bootup:
+
+```shellscript
+pct set 102 -onboot 1
+```
+
+However since it is my DNS server, I want it to let my network settle first before booting it:
+
+```shellscript
+pct set 102 -startup order=1,up=30
+```
+
+So then setting up other containers and VMs to boot on start-up will require:
+
+```shellscript
+pct set </ID/> -startup order=2,up=30
+```
+
+As all containers running on vmbr0 established through tailscale will have pi-hole as a dependency.
+
 [^1]: pct 102 --nameserver 1.1.1.1

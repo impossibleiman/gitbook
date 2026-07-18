@@ -22,7 +22,7 @@ layout:
 
 # Hardware & Structure
 
-#### 18th July 2026
+#### 18th July 2026 @ \~6AM
 
 ## Hardware Upgrade
 
@@ -45,6 +45,14 @@ Whilst this is a plan may look structured and finalised, this is of course subje
 The [left side of the diagram](#user-content-fn-1)[^1] will run under <mark style="background-color:$info;">vmbr0 and Tailscale</mark>. Note that in the previous phase, I setup tailscale on my linux container for my minecraft server. I realised later that this wasn't the best choice as it is not scalable.
 
 The [right side of the diagram](#user-content-fn-2)[^2] will run through <mark style="background-color:$info;">vmbr1</mark>. This is a virtualised network used primarily as a way to experiment without having to worry about ruining my own network. As far as the virtual to real world translation goes, this is a fairly good trade-off in my opinion.
+
+
+
+#### 18th July 2026 @ \~7:30PM
+
+I finally received my 32x2 GB RAM sticks and the unbelievable has occured. One of the RAM sticks sent to me is not compatible with my motherboard; one stick is ECC Registered while the other is not.
+
+I tried running both individually to be met with a steady amber light on the motherboard with both sticks.
 
 [^1]: LXC 100 | VM 101 | LXC 102
 
