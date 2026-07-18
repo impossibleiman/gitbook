@@ -46,9 +46,9 @@ Debian-13-standard\_13.6-1\_amd64
 
 ### Memory
 
-~~8192 GiB~~ 10240 GiB
+~~8192 GiB~~ 10240 MiB
 
-Swap 2048GiB
+Swap 2048MiB
 
 ### Network
 

@@ -2,9 +2,29 @@
 description: >-
   Following the 'Hardware & Structure' page, this is how I upgraded my host to
   include Tailscale and update automatically
+layout:
+  width: wide
+  title:
+    visible: true
+  description:
+    visible: true
+  tableOfContents:
+    visible: true
+  outline:
+    visible: true
+  pagination:
+    visible: true
+  metadata:
+    visible: true
+  tags:
+    visible: true
+  actions:
+    visible: true
 ---
 
 # Proxmox Virtual Environment
+
+#### 18th July 2026
 
 ## Automatic Backup & Updates
 
