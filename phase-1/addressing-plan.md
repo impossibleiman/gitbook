@@ -18,5 +18,6 @@ Switch Management 192.168.0.22
 Servers:\
 Windows Server 192.168.0.30\
 Debian 192.168.0.40\
-Docker VM 192.168.0.50
+Docker VM 192.168.0.50\
+AMP Game Server 192.168.0.
 
