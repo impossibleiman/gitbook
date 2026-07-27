@@ -54,6 +54,10 @@ I finally received my 32x2 GB RAM sticks and the unbelievable has occured. One o
 
 I tried running both individually to be met with a steady amber light on the motherboard with both sticks.
 
+#### 27th July 2026
+
+I have successfully returned and re-ordered some new RAM sticks hoping that they are compatible with my server. If not then it may just have to resort to going with a 4x8GB RAM setup until RAM becomes cheaper again. This will probably arrive Wednesday.
+
 [^1]: LXC 100 | VM 101 | LXC 102
 
 [^2]: VM 200 | VM 201 | VM 202
