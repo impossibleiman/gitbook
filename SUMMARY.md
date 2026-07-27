@@ -17,6 +17,7 @@
 * [VM 101 - Docker](phase-2/vm-101-docker.md)
 * [LXC 102 - Pi-Hole](phase-2/lxc-102-pi-hole.md)
 * [LXC 100 - Game Servers (AMP)](phase-2/lxc-100-game-servers-amp.md)
+* [LXC 101: Discord Bot & Bot Website](phase-2/lxc-101-discord-bot-and-bot-website.md)
 
 ***
 
