@@ -54,9 +54,17 @@ I finally received my 32x2 GB RAM sticks and the unbelievable has occured. One o
 
 I tried running both individually to be met with a steady amber light on the motherboard with both sticks.
 
-#### 27th July 2026
+#### 27th & 28th July 2026
 
-I have successfully returned and re-ordered some new RAM sticks hoping that they are compatible with my server. If not then it may just have to resort to going with a 4x8GB RAM setup until RAM becomes cheaper again. This will probably arrive Wednesday.
+I have successfully returned and re-ordered some new RAM sticks hoping that they are compatible with my server. If not then it may just have to resort to going with a 4x8GB RAM setup until RAM becomes cheaper again. This arrived on the 28th.
+
+At first inserting both RAM sticks led me to the troublesome steady amber light but after trying both sticks individually to test that they do indeed work, putting them both back in somehow worked. On the PVE host:
+
+```
+dmidecode --type memory
+```
+
+Which shows me 2133MT/s instead of 3200MT/s. This is expected as XMP is not enabled at the moment.
 
 [^1]: LXC 100 | VM 101 | LXC 102
 
