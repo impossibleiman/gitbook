@@ -269,3 +269,30 @@ From here we can now go ahead and install Pi-Hole
 {% content-ref url="lxc-102-pi-hole.md" %}
 [lxc-102-pi-hole.md](lxc-102-pi-hole.md)
 {% endcontent-ref %}
+
+
+
+#### 1st August 2026
+
+After a couple of weeks of adding and testing some docker containers, I wanted to add HTTPS. I did this through Caddy's own internal Certificate Authority. HTTPS will allow me to encrypt my data, login without a password (via passkeys) and any later API calls for home assistant won't need any prerequisite work later on.
+
+To do this, I modified my Caddyfile, appending
+
+```shellscript
+tls internal
+```
+
+to each subdomain. Now an example configuration looks something like
+
+```shellscript
+dashboard.imanizadyar.com { 
+    tls internal 
+    reverse_proxy homepage:3000 
+}
+```
+
+The only problem now is that devices don't automatically trust the caddy certificate meaning they had to be installed on each device manually. This is only a one-time per device issue.
+
+
+
+I just mentioned `home assistant` which is a container I did not think to find myself using until today. I wanted to be able to remote into my PC from anywhere in the world using Moonlight and Sunshine however I find that Sunshine does not have the best reliability for WoL. Home assistant also allows for API calls which helps to make a final dashboard for other family members to use. Using home assistant I can tell my server (over Tailscale) to tell my PC to wake up then remote into it with Moonlight from my phone or my laptop. Whilst moonlight is made ideally for remote gaming, it works brilliantly for all-round tasks and offers the most access compared to other solutions like parsec and steam remote play which are a bit more tedious to configure for post wake logging-in and therefore are not as self-hosted friendly.
