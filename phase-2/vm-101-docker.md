@@ -110,7 +110,7 @@ mkdir -p /opt/docker/{caddy,cloudflare-tunnel,homepage,prometheus,discord-bot,di
 
 and then we can make the **docker-compose.yml** (I have ran Docker on my main pc in the past)
 
-{% code title="docker-compose.yml" %}
+{% code title="docker-compose.yml" expandable="true" %}
 ```docker
 services:
   caddy:
