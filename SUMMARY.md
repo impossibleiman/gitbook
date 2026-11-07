@@ -19,6 +19,10 @@
 * [LXC 100 - Game Servers (AMP)](phase-2/lxc-100-game-servers-amp.md)
 * [Discord Bot & Bot Website](phase-2/discord-bot-and-bot-website.md)
 
+## Phase 3
+
+* [HomeAssistant Monitoring](phase-3/homeassistant-monitoring.md)
+
 ***
 
 * [To Do List](to-do-list.md)

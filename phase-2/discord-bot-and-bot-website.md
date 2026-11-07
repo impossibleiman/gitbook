@@ -35,7 +35,7 @@ docker network ls
 
 Entering my discord-bot folder, I need to create the docker-compose.yml and .env:
 
-{% code title="docker-compost.yml" expandable="true" %}
+{% code title="docker-compose.yml" expandable="true" %}
 ```docker
 services:
   the-union-bot:
