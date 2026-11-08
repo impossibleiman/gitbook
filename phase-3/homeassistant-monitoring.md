@@ -1253,6 +1253,467 @@ It seems to be working!
 
 
 
+#### 8th November 2026 @ 4:48AM
+
+## Controlling containers remotely
+
+Using a third proxy I can:
+
+* Start containers
+* Stop containers
+
+Without being able to:
+
+* Execute commands
+* Image management
+
+{% code title="/opt/docker/docker-control-proxy/nano-compose.yml" expandable="true" %}
+```yml
+services:
+  docker-control-proxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    container_name: docker-control-proxy
+    restart: unless-stopped
+
+    environment:
+      POST: "1"
+
+      CONTAINERS: "0"
+      ALLOW_START: "1"
+      ALLOW_STOP: "1"
+      ALLOW_RESTARTS: "0"
+
+      AUTH: "0"
+      SECRETS: "0"
+      BUILD: "0"
+      COMMIT: "0"
+      CONFIGS: "0"
+      DISTRIBUTION: "0"
+      EVENTS: "0"
+      EXEC: "0"
+      GRPC: "0"
+      IMAGES: "0"
+      INFO: "0"
+      NETWORKS: "0"
+      NODES: "0"
+      PING: "1"
+      PLUGINS: "0"
+      SERVICES: "0"
+      SESSION: "0"
+      SWARM: "0"
+      SYSTEM: "0"
+      TASKS: "0"
+      VERSION: "1"
+      VOLUMES: "0"
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    ports:
+      - "127.0.0.1:2376:2375"
+```
+{% endcode %}
+
+HTTP 200:
+
+{% code title="" expandable="true" %}
+```
+curl -i http://127.0.0.1:2376/_ping
+```
+{% endcode %}
+
+HTTP 403:
+
+{% code title="" expandable="true" %}
+```
+curl -i http://127.0.0.1:2376/containers/json
+```
+{% endcode %}
 
 
-My second set of notifications will be for when containers need updating
+
+
+
+{% code title="/opt/docker/homeassistant/config/configuration.yaml" expandable="true" %}
+```yaml
+...
+
+rest_command:
+  docker_start_container:
+    url: "http://127.0.0.1:2376/containers/{{ container_id }}/start"
+    method: POST
+
+  docker_stop_container:
+    url: "http://127.0.0.1:2376/containers/{{ container_id }}/stop"
+    method: POST
+```
+{% endcode %}
+
+Then restart HomeAssistant
+
+
+
+These can be tested in Dev Tools > Actions
+
+{% code title="" expandable="true" %}
+```yaml
+action: rest_command.docker_start_container
+data:
+    container_id: "affine"
+```
+{% endcode %}
+
+{% code title="" expandable="true" %}
+```yaml
+action: rest_command.docker_stop_container
+data: 
+    container_id: "affine"
+```
+{% endcode %}
+
+
+
+Then we can add a restart script
+
+{% code title="" expandable="true" %}
+```yaml
+alias: Docker - Restart Container
+description: Stop and start a Docker container through the restricted control proxy.
+mode: parallel
+max: 10
+
+fields:
+  container_id:
+    name: Container ID
+    description: Full Docker container ID
+    required: true
+    selector:
+      text:
+
+sequence:
+  - action: rest_command.docker_stop_container
+    data:
+      container_id: "{{ container_id }}"
+
+  - action: rest_command.docker_start_container
+    data:
+      container_id: "{{ container_id }}"
+```
+{% endcode %}
+
+and it can be tested the same way as before
+
+<figure><img src="../.gitbook/assets/image (11).png" alt=""><figcaption></figcaption></figure>
+
+We can also trace the script to confirm it worked
+
+<figure><img src="../.gitbook/assets/image (12).png" alt=""><figcaption></figcaption></figure>
+
+
+
+Installing Browser Mod from HACS (or what is now known as just the marketplace with their latest update 2026.11.0), we can make use of interactive pop up menus. This helps up map more actions per card for both my PC and iOS.
+
+We need to make a patch to expose the docker id to target the correct container when performing actions
+
+{% code title="" expandable="true" %}
+```shellscript
+python3 - <<'PY'
+from pathlib import Path
+
+path = Path("/opt/docker/homeassistant/config/docker_inventory.py")
+content = path.read_text()
+
+old = '''    containers.append({
+        "name": container["Names"][0].lstrip("/"),
+        "image": container["Image"],'''
+
+new = '''    containers.append({
+        "name": container["Names"][0].lstrip("/"),
+        "id": container_id,
+        "image": container["Image"],'''
+
+if old not in content:
+    raise SystemExit("Expected code not found; no changes made.")
+
+path.write_text(content.replace(old, new, 1))
+print("Docker container IDs added to inventory.")
+PY
+```
+{% endcode %}
+
+Then we end up with a final Auto Entities card configuration. ENSURE code editor
+
+{% code title="" expandable="true" %}
+```yaml
+type: custom:auto-entities
+card:
+  type: grid
+  columns: 8
+  square: false
+card_param: cards
+show_empty: false
+filter:
+  template: |
+    [
+      {% set containers = state_attr('sensor.docker_container_inventory', 'containers') or [] %}
+      {% set init_names = [
+        'livesync-init',
+        'affine-migration'
+      ] %}
+
+      {% set protected_names = [
+        'homeassistant',
+        'docker-control-proxy',
+        'docker-socket-proxy',
+        'dozzle-socket-proxy',
+        'dozzle',
+        'caddy',
+        'cloudflared'
+      ] %}
+      
+      {% set running = containers
+        | selectattr('state', 'equalto', 'running')
+        | rejectattr('name', 'in', init_names)
+        | sort(attribute='created', reverse=true)
+        | list %}
+      
+      {% set stopped = containers
+        | rejectattr('state', 'equalto', 'running')
+        | rejectattr('name', 'in', init_names)
+        | sort(attribute='created', reverse=true)
+        | list %}
+      
+      {% set initialisation = containers
+        | selectattr('name', 'in', init_names)
+        | sort(attribute='created', reverse=true)
+        | list %}
+      {% set icons = {
+        'homeassistant': 'mdi:home-assistant',
+        'homepage': 'mdi:view-dashboard',
+        'jellyfin': 'mdi:play-circle',
+        'metube': 'mdi:download',
+        'cloudflared': 'mdi:cloud',
+        'snapotter': 'mdi:camera',
+        'snapotter-postgres': 'mdi:database',
+        'snapotter-redis': 'mdi:database',
+        'nextcloud': 'mdi:cloud-outline',
+        'nextcloud-db': 'mdi:database',
+        'nextcloud-redis': 'mdi:database',
+        'affine': 'mdi:note-edit',
+        'affine-postgres': 'mdi:database',
+        'affine-redis': 'mdi:database',
+        'affine-migration': 'mdi:database-sync',
+        'prometheus': 'mdi:chart-line',
+        'dozzle': 'mdi:text-box-search',
+        'dozzle-socket-proxy': 'mdi:shield-lock',
+        'docker-socket-proxy': 'mdi:shield-lock',
+        'livesync-couchdb': 'mdi:database',
+        'livesync-tailscale': 'mdi:vpn',
+        'livesync-init': 'mdi:cog',
+        'the-union-bot': 'mdi:robot',
+        'caddy': 'mdi:server-security'
+      } %}
+      {% set services = {
+        'homeassistant': 'https://homeassistant.imanizadyar.com',
+        'homepage': 'https://dashboard.imanizadyar.com',
+        'jellyfin': 'https://jellyfin.imanizadyar.com',
+        'affine': 'https://affine.imanizadyar.com',
+        'nextcloud': 'https://nextcloud.imanizadyar.com',
+        'prometheus': 'https://prometheus.imanizadyar.com',
+        'metube': 'https://metube.imanizadyar.com',
+        'snapotter': 'https://snapotter.imanizadyar.com',
+        'dozzle': 'https://dockerlogs.imanizadyar.com'
+      } %}
+      {% for c in running + stopped + initialisation %}
+      {% set status = c.state | default('unknown') %}
+      {% set health = c.health | default('not_configured') %}
+      {% set restarts_15m = c.restarts_15m | default(0) | int %}
+      {% set image = c.image.split('/')[-1] %}
+      {% set colour =
+        'rgba(198, 40, 40, 0.18)' if health == 'unhealthy' or (status == 'exited' and c.name not in init_names)
+        else 'rgba(239, 108, 0, 0.22)' if health == 'starting' or status == 'restarting' or restarts_15m >= 3
+        else 'rgba(46, 125, 50, 0.18)' if status == 'running'
+        else 'rgba(120, 120, 120, 0.18)'
+      %}
+      {% set menu_cards = [
+        {
+          'type': 'button',
+          'name': 'View logs',
+          'icon': 'mdi:text-box-search',
+          'tap_action': {
+            'action': 'url',
+            'url_path': 'https://dockerlogs.imanizadyar.com/show?name=' ~ c.name
+          }
+        }
+      ] %}
+      
+      {% if c.name not in protected_names and status == 'running' %}
+        {% set menu_cards = menu_cards + [
+        {
+          'type': 'button',
+          'name': 'Stop',
+          'icon': 'mdi:stop-circle-outline',
+          'tap_action': {
+            'action': 'fire-dom-event',
+            'browser_mod': {
+              'service': 'script.docker_container_action',
+              'data': {
+                'container_id': c.id,
+                'operation': 'stop',
+                'browser_id': 'THIS'
+              }
+            },
+            'confirmation': {
+              'text': 'Are you sure you want to stop ' ~ c.name ~ '?'
+            }
+          }
+        },
+        {
+          'type': 'button',
+          'name': 'Restart',
+          'icon': 'mdi:restart',
+          'tap_action': {
+            'action': 'fire-dom-event',
+            'browser_mod': {
+              'service': 'script.docker_container_action',
+              'data': {
+                'container_id': c.id,
+                'operation': 'restart',
+                'browser_id': 'THIS'
+              }
+            },
+            'confirmation': {
+              'text': 'Are you sure you want to restart ' ~ c.name ~ '?'
+            }
+          }
+        }
+        ] %}
+      {% elif c.name not in protected_names and status in ['exited', 'created'] %}
+        {% set menu_cards = menu_cards + [
+        {
+          'type': 'button',
+          'name': 'Start',
+          'icon': 'mdi:play-circle-outline',
+          'tap_action': {
+            'action': 'fire-dom-event',
+            'browser_mod': {
+              'service': 'script.docker_container_action',
+              'data': {
+                'container_id': c.id,
+                'operation': 'start',
+                'browser_id': 'THIS'
+              }
+            },
+            'confirmation': {
+              'text': 'Are you sure you want to start ' ~ c.name ~ '?'
+            }
+          }
+        }
+        ] %}
+      {% endif %}
+        {{
+          {
+            'type': 'custom:button-card',
+            'entity': 'sensor.docker_container_inventory',
+            'name': c.name,
+            'icon': icons.get(c.name, 'mdi:docker'),
+            'show_state': false,
+            'show_label': true,
+            'label': (
+              ('UNHEALTHY' if health == 'unhealthy' else
+               'STARTING' if health == 'starting' else
+               'EXITED' if status == 'exited' and c.name not in init_names else
+               'RESTART WARNING: ' ~ (restarts_15m | string) ~ '/15M' if restarts_15m >= 3 else
+               'RESTARTS: ' ~ (restarts_15m | string) ~ '/15M' if restarts_15m > 0 else
+               '')
+              ~ (' · ' if (health == 'unhealthy' or health == 'starting' or (status == 'exited' and c.name not in init_names) or restarts_15m > 0) else '')
+              ~ 'Created ' ~ c.created_date
+            ),
+            'tap_action': {
+              'action': 'url',
+              'url_path': services.get(c.name, 'https://dockerlogs.imanizadyar.com/show?name=' ~ c.name)
+            },
+            'hold_action': {
+              'action': 'fire-dom-event',
+              'browser_mod': {
+                'service': 'browser_mod.popup',
+                'data': {
+                  'title': c.name,
+                  'adaptive': True,
+                  'content': {
+                    'type': 'vertical-stack',
+                    'cards': menu_cards
+                  }
+                }
+              }
+            },
+            'styles': {
+              'card': [
+                {'background-color': colour},
+                {'padding': '14px'},
+                {'height': '140px'},
+                {'border-radius': '12px'}
+              ],
+              'name': [
+                {'font-size': '16px'},
+                {'font-weight': '600'},
+                {'white-space': 'normal'},
+                {'overflow-wrap': 'anywhere'}
+              ],
+              'label': [
+                {'font-size': '13px'},
+                {'white-space': 'normal'},
+                {'opacity': '0.85'}
+              ],
+
+            }
+          }
+        }},
+      {% endfor %}
+    ]
+grid_options:
+  columns: 48
+  rows: auto
+
+```
+{% endcode %}
+
+
+
+## Managing Updates
+
+I want HomeAssistant to be able to tell me:
+
+* Which containers have updates available.
+* What version is currently running and what version is available.
+* What has changed between those versions.
+* Whether the update contains breaking changes, security fixes or database migrations.
+* Whether the update is safe to apply, needs attention, or should be handled manually.
+* When I'm ready, allow me to initiate the update from a second dashboard page called Updates.
+
+The tool, What's Up Docker (WUD) seems like the perfect fit for this.
+
+We can also use the existing `docker-socket-proxy` for WUD's monitoring requirements.
+
+{% code title="" expandable="true" %}
+```shellscript
+mkdir -p /opt/docker/mosquitto/{config,data}
+docker network create updates
+```
+{% endcode %}
+
+{% code title="" expandable="true" %}
+```shellscript
+cat > /opt/docker/mosquitto/config/mosquitto.conf <<'EOF'
+listener 1883 0.0.0.0
+allow_anonymous false
+password_file /mosquitto/config/passwordfile
+
+persistence true
+persistence_location /mosquitto/data/
+
+log_dest stdout
+EOF
+```
+{% endcode %}
+
