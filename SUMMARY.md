@@ -22,6 +22,7 @@
 ## Phase 3
 
 * [HomeAssistant Monitoring](phase-3/homeassistant-monitoring.md)
+* [First Major Upgrade & Migrations](phase-3/first-major-upgrade-and-migrations.md)
 
 ***
 
